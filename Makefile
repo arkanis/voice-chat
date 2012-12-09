@@ -9,8 +9,11 @@ server: server.c proto.h
 client: client.c proto.h
 	gcc $(GCC_FLAGS) client.c -o client $(LINKER_ARGS)
 
+threaded_pa: threaded_pa.c
+	gcc -pthread $(GCC_FLAGS) threaded_pa.c -o threaded_pa -lpulse-simple
+
 clean:
-	rm -f server client
+	rm -f server client threaded_pa
 
 
 deps: opus
@@ -33,4 +36,4 @@ test_mic:
 	parec --latency-msec 500 --rate 48000 | MALLOC_CHECK_=3 PULSE_PROP=filter.want=echo-cancel ./client
 
 test_client:
-	parec --latency-msec 5 --rate 48000 | PULSE_PROP=filter.want=echo-cancel ./client | pacat --latency-msec 5 --rate 48000
+	parec --latency-msec 5 --rate 48000 | ./client | pacat --latency-msec 5 --rate 48000
