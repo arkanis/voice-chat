@@ -6,6 +6,16 @@
 #include <pulse/simple.h>
 #include <pulse/error.h>
 
+/*
+
+The core idea here is to avoid the complex Pulse Audio API. Looks like it can not be integrated
+into a poll system call anyway so why bother? We use two instances of the simple API to write to
+and read from pipes. These pipes in turn are then used with poll to see if data is available.
+
+Pulse Audio is not really meant for this. The functions are thread save but the objects are not.
+Therefore each thread uses its own stuff and no Pulse Audio objects are shared.
+
+*/
 
 static const pa_sample_spec ss = {
 	.format = PA_SAMPLE_S16LE,

@@ -22,11 +22,15 @@
 #include "proto.h"
 
 
+//
+// Signal handling stuff
+//
 bool quit = false;
 
 void sig_handler(int signum){
 	quit = true;
 }
+
 
 void log_print(const char *format, ...){
 	va_list args;
@@ -35,8 +39,23 @@ void log_print(const char *format, ...){
 	va_end(args);
 }
 
+/* Not yet used
+typedef struct {
+	char *host;
+	char *port;
+	
+	uint32_t sample_rate;  // in Hz
+	uint8_t channel_count;  // 1 or 2
+	uint16_t frame_duration;  // in 0.1 ms units, 25 (2.5ms), 50, 100, 200, 400, 600
+	
+	size_t frame_samples_per_channel;
+	size_t frame_size;  // in bytes
+} options_t, *options_p;
+*/
 
 int main(int argc, char **argv){
+	
+	
 	int error = 0;
 	
 	struct sigaction action;
@@ -74,7 +93,7 @@ int main(int argc, char **argv){
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_DGRAM;
 	struct addrinfo *addr_info;
-	error = getaddrinfo("localhost", "61234", &hints, &addr_info);
+	error = getaddrinfo("arkanis.de", "61234", &hints, &addr_info);
 	if (error != 0){
 		log_print("getaddrinfo failed: %s\n", gai_strerror(error));
 		return -1;
