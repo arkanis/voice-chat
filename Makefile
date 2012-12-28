@@ -1,5 +1,5 @@
 GCC_FLAGS = -g -std=gnu99 -Wall -Iopus/include
-LINKER_ARGS = opus/.libs/libopus.a -lm
+LINKER_ARGS = opus/.libs/libopus.a -lm -lpulse-simple
 
 all: server client deps
 
